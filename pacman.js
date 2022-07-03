@@ -3,14 +3,17 @@ import Map from "./map.js";
 
 export default class Pacman extends Object {
     constructor(images, growFactor) {
-        super(images, growFactor);
+        let pos = { x: 1, y: 1 };
+        super(images, growFactor, pos);
         this.lastDir = 5;
         this.type = "pacman";
     }
     move() {
         super.move();
         if (this.lastDir != 5 && this.isValidPos() && Map.canMove(this.pos, this.lastDir)) {
+            // console.log(this.pos, this.lastDir);
             this.dir = this.lastDir;
+
             this.lastDir = 5;
             this.speed = 0.1;
         }

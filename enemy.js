@@ -3,10 +3,12 @@ import Map from "./map.js";
 
 export default class Enemy extends Object {
     constructor(images, growFactor) {
-        super(images, growFactor);
-        this.pos = { x: 11, y: 11 };
-        this.dir = 1;
+        let pos = { x: 11, y: 11 };
+        super(images, growFactor, pos);
+        this.dir = Math.floor(Math.random() * 2);
+        this.speed = 0.12;
         this.type = "monster";
+        // this.move();
     }
     move() {
         super.move();
@@ -28,5 +30,10 @@ export default class Enemy extends Object {
             this.size,
             this.size
         );
+    }
+    resetPos() {
+        super.resetPos();
+        this.dir = Math.floor(Math.random() * 2);
+        // this.move();
     }
 }

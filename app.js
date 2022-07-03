@@ -3,6 +3,7 @@ import Map from "./map.js";
 // import Object from "./object.js";
 import Pacman from "./pacman.js";
 import Enemy from "./enemy.js";
+import Game from "./game.js";
 
 // DOM
 const rockImg = document.querySelector("#rock");
@@ -14,6 +15,7 @@ const deathImg = document.querySelector("#death");
 const canvas = document.querySelector("#canvas");
 const ctx = canvas.getContext("2d");
 let map,
+    game,
     pacman,
     inputHandler,
     enemys = [];
@@ -73,34 +75,37 @@ const applyMask = (maskColor) => {
     ctx.putImageData(canvasImgData, 0, 0);
 };
 let flag = true;
-const updateGame = (delta) => {
+const updateGame = () => {
     if (flag) {
-        if (!delta) return;
         map.drawMap(ctx);
-        pacman.updateSprite(ctx);
 
         enemys.forEach((elem) => {
-            elem.updateSprite(ctx);
             if (pacman.collision(elem)) {
-                // alert("Choco");
-                // Game Stop
                 flag = false;
+                pacman.animCount = 0;
             }
         });
     } else {
         pacman.death(ctx, deathPacmanArr);
+        if (pacman.animCount == 60) {
+            [pacman, ...enemys].forEach((obj) => {
+                obj.resetPos();
+                // console.log(obj);
+            });
+            // console.log([pacman, ...enemys].length);
+            flag = true;
+        }
     }
     applyMask(maskColor);
 };
 
 let start = 0;
 const gameLoop = async (timestamp) => {
-    let delta = timestamp - start;
-    start = timestamp;
-    // confirm
-    // console.log(delta);
-    updateGame(delta);
-    // if (!flag) return;
+    // let delta = timestamp - start;
+    // start = timestamp;
+
+    updateGame();
+
     requestAnimationFrame(gameLoop);
 };
 
@@ -120,6 +125,7 @@ const createObjects = async () => {
 
 setTimeout(async () => {
     await createObjects();
+    game = new Game();
     map = new Map(mapArr, canvas.width, canvas.height, growFactor, { rockImg, foodImg }, [pacman, ...enemys]);
     inputHandler = new InputHandler(pacman);
     requestAnimationFrame(gameLoop);

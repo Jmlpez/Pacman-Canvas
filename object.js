@@ -2,8 +2,9 @@ import Map from "./map.js";
 
 export default class Object {
     static collision_dist = 0.7;
-    constructor(images, growFactor) {
-        this.pos = { x: 1, y: 1 };
+    constructor(images, growFactor, pos) {
+        this.pos = pos;
+        this.initialPos = { ...this.pos };
         this.speed = 0.1;
         this.dir = 3;
         this.images = images;
@@ -35,10 +36,10 @@ export default class Object {
         } else if (this.dir == 3) {
             this.pos.y += this.speed;
         }
-        if (this.pos.x < 0) this.pos.x = Map.limits.x;
-        else if (this.pos.x > Map.limits.x) this.pos.x = 0;
-        else if (this.pos.y < 0) this.pos.y = Map.limits.y;
-        else if (this.pos.y > Map.limits.y) this.pos.y = 0;
+        if (this.pos.x < 0) this.pos.x = Map.limits.x - 1;
+        else if (this.pos.x == Map.limits.x) this.pos.x = 0;
+        else if (this.pos.y == 0) this.pos.y = Map.limits.y - 1;
+        else if (this.pos.y == Map.limits.y - 1) this.pos.y = 0;
 
         this.trunc();
     }
@@ -73,5 +74,11 @@ export default class Object {
             Math.abs(this.pos.x - object.pos.x) < Object.collision_dist &&
             Math.abs(this.pos.y - object.pos.y) < Object.collision_dist
         );
+    }
+    resetPos() {
+        this.pos = { ...this.initialPos };
+        this.dir = Math.floor(Math.random() * 4);
+        this.speed = 0.1;
+        this.animCount = 0;
     }
 }

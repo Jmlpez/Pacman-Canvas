@@ -5,6 +5,8 @@
 3- bottom
 */
 
+import Game from "./game.js";
+
 export default class Map {
     static map = [];
     static limits = {};
@@ -65,6 +67,9 @@ export default class Map {
             }
         }
         this.objectCollisions();
+        this.objects.forEach((obj) => {
+            obj.updateSprite(ctx);
+        });
     }
     updateMap(str = "", pos, char = "") {
         let newStr = "";
@@ -81,8 +86,10 @@ export default class Map {
             if (Map.map[pos.y][pos.x] === "o" && obj.type == "pacman") {
                 Map.map[pos.y] = this.updateMap(Map.map[pos.y], pos.x, " ");
                 //increase the score...
+                Game.score++;
             }
             if (collision) {
+                // alert("COLI");
                 obj.stop();
             }
             // console.log(this.);
