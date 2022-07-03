@@ -1,22 +1,26 @@
+import InputHandler from "./inputHandler.js";
+import Map from "./map.js";
+// import Object from "./object.js";
+import Pacman from "./pacman.js";
+import Enemy from "./enemy.js";
+
 // DOM
-const rockDOM = document.querySelector("#rock");
+const rockImg = document.querySelector("#rock");
+const foodImg = document.querySelector("#food");
+const enemyImg = document.querySelector("#enemy");
+const pacmanImg = document.querySelector("#pacman");
+const deathImg = document.querySelector("#death");
+
 const canvas = document.querySelector("#canvas");
 const ctx = canvas.getContext("2d");
+let map,
+    pacman,
+    inputHandler,
+    enemys = [];
+let pacmanImgArr = [],
+    deathPacmanArr = [];
 
-const MAX_ROW = 20,
-    MAX_COL = 29;
-
-canvas.width = MAX_COL * 30;
-canvas.height = MAX_ROW * 30;
-
-const growFactor = {
-    x: parseInt(canvas.width) / MAX_COL,
-    y: parseInt(canvas.height) / MAX_ROW,
-};
-
-console.log(growFactor);
-
-let map = [
+let mapArr = [
     "XXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
     "X  o |o o o XXXXX o o o| o  X",
     "X XXX XXXXX XXXXX XXXXX XXX X",
@@ -39,9 +43,86 @@ let map = [
     "XXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
 ];
 
-for (let i = 0; i < map.length; i++)
-    for (let j = 0; j < map[i].length; j++) {
-        if (map[i][j] === "X") {
-            ctx.drawImage(rockDOM, j * growFactor.y, i * growFactor.x, growFactor.y, growFactor.x);
+const MAX_ROW = 20,
+    MAX_COL = 29;
+
+const maskColor = {
+    r: 255,
+    g: 0,
+    b: 255,
+};
+
+//The objects size is 30 in this case
+canvas.width = MAX_COL * 30;
+canvas.height = MAX_ROW * 30;
+
+const growFactor = {
+    x: parseInt(canvas.width) / MAX_COL,
+    y: parseInt(canvas.height) / MAX_ROW,
+};
+
+// Apply mask to the pink color
+const applyMask = (maskColor) => {
+    const canvasImgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const data = canvasImgData.data;
+    for (let i = 0; i < data.length; i += 4) {
+        if (data[i] == maskColor.r && data[i + 1] == maskColor.g && data[i + 2] == maskColor.b) {
+            data[i + 3] = 0;
         }
     }
+    ctx.putImageData(canvasImgData, 0, 0);
+};
+let flag = true;
+const updateGame = (delta) => {
+    if (flag) {
+        if (!delta) return;
+        map.drawMap(ctx);
+        pacman.updateSprite(ctx);
+
+        enemys.forEach((elem) => {
+            elem.updateSprite(ctx);
+            if (pacman.collision(elem)) {
+                // alert("Choco");
+                // Game Stop
+                flag = false;
+            }
+        });
+    } else {
+        pacman.death(ctx, deathPacmanArr);
+    }
+    applyMask(maskColor);
+};
+
+let start = 0;
+const gameLoop = async (timestamp) => {
+    let delta = timestamp - start;
+    start = timestamp;
+    // confirm
+    // console.log(delta);
+    updateGame(delta);
+    // if (!flag) return;
+    requestAnimationFrame(gameLoop);
+};
+
+const createObjects = async () => {
+    for (let i = 0; i < 5; i++) {
+        pacmanImgArr.push(await createImageBitmap(pacmanImg, i * 33, 0, 33, 33));
+    }
+    for (let i = 0; i < 7; i++) {
+        deathPacmanArr.push(await createImageBitmap(deathImg, i * 33, 0, 33, 33));
+    }
+
+    pacman = new Pacman(pacmanImgArr, growFactor);
+    for (let i = 0; i < 4; i++) {
+        enemys.push(new Enemy([enemyImg], growFactor));
+    }
+};
+
+setTimeout(async () => {
+    await createObjects();
+    map = new Map(mapArr, canvas.width, canvas.height, growFactor, { rockImg, foodImg }, [pacman, ...enemys]);
+    inputHandler = new InputHandler(pacman);
+    requestAnimationFrame(gameLoop);
+}, 300);
+
+// console.log(x);
