@@ -23,7 +23,6 @@ export default class Pacman extends Object {
     draw(ctx) {
         let count = Math.floor(this.animCount / 10) % 2;
         let img = count == 0 ? this.images[this.dir] : this.images[4];
-        // console.log(img);
         this.animCount++;
         ctx.drawImage(img, this.pos.x * this.growFactor.x, this.pos.y * this.growFactor.y, this.size, this.size);
     }

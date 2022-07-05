@@ -8,7 +8,6 @@ export default class Enemy extends Object {
         this.dir = Math.floor(Math.random() * 2);
         this.speed = 0.12;
         this.type = "monster";
-        // this.move();
     }
     move() {
         super.move();
@@ -23,13 +22,10 @@ export default class Enemy extends Object {
         }
     }
     draw(ctx) {
-        ctx.drawImage(
-            this.images[0],
-            this.pos.x * this.growFactor.x,
-            this.pos.y * this.growFactor.y,
-            this.size,
-            this.size
-        );
+        let count = Math.floor(this.animCount / 4) % 6;
+        let img = !count ? this.images[this.dir * 2] : this.images[this.dir * 2 + 1];
+        ctx.drawImage(img, this.pos.x * this.growFactor.x, this.pos.y * this.growFactor.y, this.size, this.size);
+        this.animCount++;
     }
     resetPos() {
         super.resetPos();

@@ -8,7 +8,7 @@ import Game from "./game.js";
 // DOM
 const rockImg = document.querySelector("#rock");
 const foodImg = document.querySelector("#food");
-const enemyImg = document.querySelector("#enemy");
+const enemyImg = document.querySelector("#ghosts");
 const pacmanImg = document.querySelector("#pacman");
 const deathImg = document.querySelector("#death");
 
@@ -101,18 +101,29 @@ const createObjects = async () => {
         deathPacmanArr.push(await createImageBitmap(deathImg, i * 33, 0, 33, 33));
     }
 
+    //There are 4 enemys and 8 enemys direction;
+    let enemysArrImg = [];
+    for (let i = 0; i < 4; i++) {
+        let enemySprites = [];
+        for (let j = 0; j < 8; j++) {
+            enemySprites.push(await createImageBitmap(enemyImg, 16 * j, 16 * i, 16, 16));
+        }
+        // because of the sprites, is must start left and not right (changing the photo in paint would solve the problem....)
+        [enemySprites[0], enemySprites[2]] = [enemySprites[2], enemySprites[0]];
+        [enemySprites[1], enemySprites[3]] = [enemySprites[3], enemySprites[1]];
+        // because of the sprites, is must start left and not right (changing the photo in paint would solve the problem....)
+        enemysArrImg.push(enemySprites);
+    }
+
     pacman = new Pacman(pacmanImgArr, deathPacmanArr, growFactor);
     for (let i = 0; i < 4; i++) {
-        enemys.push(new Enemy([enemyImg], growFactor));
+        enemys.push(new Enemy(enemysArrImg[i], growFactor));
     }
 };
 
 window.addEventListener("load", async () => {
     await createObjects();
     game = new Game([mapArr], canvas.width, canvas.height, growFactor, { rockImg, foodImg }, [pacman, ...enemys]);
-    // map = new Map(mapArr, canvas.width, canvas.height, growFactor, { rockImg, foodImg }, [pacman, ...enemys]);
     inputHandler = new InputHandler(pacman);
-    requestAnimationFrame(gameLoop);
+    // requestAnimationFrame(gameLoop);
 });
-
-// console.log(x);
