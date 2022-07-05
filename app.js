@@ -69,33 +69,17 @@ const applyMask = (maskColor) => {
     const data = canvasImgData.data;
     for (let i = 0; i < data.length; i += 4) {
         if (data[i] == maskColor.r && data[i + 1] == maskColor.g && data[i + 2] == maskColor.b) {
-            data[i + 3] = 0;
+            data[i] = 0;
+            data[i + 1] = 0;
+            data[i + 2] = 0;
+            data[i + 3] = 255;
         }
     }
     ctx.putImageData(canvasImgData, 0, 0);
 };
-let flag = true;
-const updateGame = () => {
-    if (flag) {
-        map.drawMap(ctx);
 
-        enemys.forEach((elem) => {
-            if (pacman.collision(elem)) {
-                flag = false;
-                pacman.animCount = 0;
-            }
-        });
-    } else {
-        pacman.death(ctx, deathPacmanArr);
-        if (pacman.animCount == 60) {
-            [pacman, ...enemys].forEach((obj) => {
-                obj.resetPos();
-                // console.log(obj);
-            });
-            // console.log([pacman, ...enemys].length);
-            flag = true;
-        }
-    }
+const updateGame = () => {
+    game.update(ctx);
     applyMask(maskColor);
 };
 
@@ -117,18 +101,18 @@ const createObjects = async () => {
         deathPacmanArr.push(await createImageBitmap(deathImg, i * 33, 0, 33, 33));
     }
 
-    pacman = new Pacman(pacmanImgArr, growFactor);
+    pacman = new Pacman(pacmanImgArr, deathPacmanArr, growFactor);
     for (let i = 0; i < 4; i++) {
         enemys.push(new Enemy([enemyImg], growFactor));
     }
 };
 
-setTimeout(async () => {
+window.addEventListener("load", async () => {
     await createObjects();
-    game = new Game();
-    map = new Map(mapArr, canvas.width, canvas.height, growFactor, { rockImg, foodImg }, [pacman, ...enemys]);
+    game = new Game([mapArr], canvas.width, canvas.height, growFactor, { rockImg, foodImg }, [pacman, ...enemys]);
+    // map = new Map(mapArr, canvas.width, canvas.height, growFactor, { rockImg, foodImg }, [pacman, ...enemys]);
     inputHandler = new InputHandler(pacman);
     requestAnimationFrame(gameLoop);
-}, 300);
+});
 
 // console.log(x);

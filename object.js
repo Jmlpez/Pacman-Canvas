@@ -6,7 +6,7 @@ export default class Object {
         this.pos = pos;
         this.initialPos = { ...this.pos };
         this.speed = 0.1;
-        this.dir = 3;
+        this.dir = 1;
         this.images = images;
         this.growFactor = growFactor;
         this.size = Math.min(growFactor.x, growFactor.y);

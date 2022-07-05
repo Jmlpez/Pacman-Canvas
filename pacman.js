@@ -2,9 +2,11 @@ import Object from "./object.js";
 import Map from "./map.js";
 
 export default class Pacman extends Object {
-    constructor(images, growFactor) {
-        let pos = { x: 1, y: 1 };
+    constructor(images, deathSprites, growFactor) {
+        let pos = { x: 14, y: 17 };
         super(images, growFactor, pos);
+        this.deathSprites = deathSprites;
+        this.finishDeathAnim = false;
         this.lastDir = 5;
         this.type = "pacman";
     }
@@ -38,10 +40,11 @@ export default class Pacman extends Object {
         }
         this.speed = 0.1;
     }
-    death(ctx, sprites = []) {
+    death(ctx) {
         let count = Math.floor(this.animCount / 10) % 6;
-        let img = sprites[count];
+        let img = this.deathSprites[count];
         ctx.drawImage(img, this.pos.x * this.growFactor.x, this.pos.y * this.growFactor.y, this.size, this.size);
         this.animCount++;
+        if (this.animCount >= 60) this.finishDeathAnim = true;
     }
 }

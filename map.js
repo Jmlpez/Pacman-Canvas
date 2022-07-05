@@ -32,17 +32,18 @@ export default class Map {
         return true;
     }
 
-    constructor(map, width, height, growFactor, images, objects) {
+    constructor(map, width, height, growFactor, images, [pacman, ...enemys]) {
         Map.map = map;
         Map.limits = { x: map[0].length, y: map.length };
         this.width = width;
         this.height = height;
         this.growFactor = growFactor;
         this.images = images;
-        this.objects = objects;
+        this.pacman = pacman;
+        this.enemys = enemys;
     }
     drawMap(ctx) {
-        ctx.fillStyle = "#fff";
+        ctx.fillStyle = "#000";
         ctx.fillRect(0, 0, this.width, this.height);
 
         for (let i = 0; i < Map.map.length; i++) {
@@ -67,7 +68,7 @@ export default class Map {
             }
         }
         this.objectCollisions();
-        this.objects.forEach((obj) => {
+        [this.pacman, ...this.enemys].forEach((obj) => {
             obj.updateSprite(ctx);
         });
     }
@@ -79,7 +80,7 @@ export default class Map {
         return newStr;
     }
     objectCollisions() {
-        this.objects.forEach((obj) => {
+        [this.pacman, ...this.enemys].forEach((obj) => {
             let pos = obj.getPos();
             let collision = !Map.canMove(pos, obj.dir);
 
@@ -87,12 +88,34 @@ export default class Map {
                 Map.map[pos.y] = this.updateMap(Map.map[pos.y], pos.x, " ");
                 //increase the score...
                 Game.score++;
+
+                let coinAudio = document.querySelector("#coinSound");
+                // document.querySelector("audio").p
+                coinAudio.currentTime = 0;
+                coinAudio.play();
             }
             if (collision) {
-                // alert("COLI");
                 obj.stop();
             }
-            // console.log(this.);
+        });
+    }
+    deathCollision() {
+        for (let i = 0; i < this.enemys.length; i++)
+            if (this.pacman.collision(this.enemys[i])) {
+                this.pacman.animCount = 0;
+                return true;
+            }
+
+        return false;
+    }
+    stop() {
+        [this.pacman, ...this.enemys].forEach((obj) => {
+            obj.stop();
+        });
+    }
+    resetMap() {
+        [this.pacman, ...this.enemys].forEach((obj) => {
+            obj.resetPos();
         });
     }
 }

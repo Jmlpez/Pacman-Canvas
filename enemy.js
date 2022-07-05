@@ -34,6 +34,5 @@ export default class Enemy extends Object {
     resetPos() {
         super.resetPos();
         this.dir = Math.floor(Math.random() * 2);
-        // this.move();
     }
 }
