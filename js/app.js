@@ -11,6 +11,7 @@ const foodImg = document.querySelector("#food");
 const enemyImg = document.querySelector("#ghosts");
 const pacmanImg = document.querySelector("#pacman");
 const deathImg = document.querySelector("#death");
+const mazeImg = document.querySelector("#maze-parts");
 
 const canvas = document.querySelector("#canvas");
 const ctx = canvas.getContext("2d");
@@ -20,7 +21,43 @@ let map,
     inputHandler,
     enemys = [];
 let pacmanImgArr = [],
-    deathPacmanArr = [];
+    deathPacmanArr = [],
+    mazeImgsArr = [],
+    mazeImgsObj = {};
+
+let newMapArr = [
+    "bkkkkkkkkkkkkR kkkkkkkkkkkka",
+    "d T T T T T Tzy T T T T T Tc",
+    "dTxoow xooow zyTxooowTxoow c",
+    "dVzSSyTzSSSyTzy zSSSy zSSy c",
+    "dTBuuA BuuuA BATBuuuATBuuA c",
+    "d T T T T T T T T T T T T Tc",
+    "dTxoow xwTxoooooow xwTxoow c",
+    "d BuuATzy BuuJIuuATzy BuuATc",
+    "dT T T zyT T zyT T zyT T T c",
+    "fmmmmwTzKoowSzySxooLy xmmmme",
+    "SSSSSd zIuuASBASBuuJyTcSSSSS",
+    "SSSSSdTzySSSSSSSSSSzy cSSSSS",
+    "SSSSSd zySDmH  GmCSzyTcSSSSS",
+    "SSSSSS SSScSSSSSSdSSSTSSSSSS",
+    "kkkkkATBAScSSSSSSdSBA Bkkkkk",
+    "mmmmmwTxwScSSSSSSdSxw xmmmmm",
+    "SSSSSd zySFkkkkkkESzyTcSSSSS",
+    "SSSSSdTzySSSSSSSSSSzy cSSSSS",
+    "SSSSSd zySxoooooowSzyTcSSSSS",
+    "bkkkkATBASBuuJIuuASBA Bkkkka",
+    "dT T T T T T zyT T T T T T c",
+    "d xoowTxooowTzy xooow xoowTc",
+    "dTBuJy BuuuA BATBuuuATzIuA c",
+    "dVT zyT T T TSS T T T zyT  c",
+    "howTzy xwTxoooooow xwTzy xog",
+    "juA BATzy BuuJIuuATzy BATBui",
+    "dT T T zyT T zyT T zyT T T c",
+    "d xooooLKoowTzy xooLKoooowTc",
+    "dTBuuuuuuuuA BATBuuuuuuuuA c",
+    "d T T T T T T T T T T T T Tc",
+    "fmmmmmmmmmmmmmmmmmmmmmmmmmme",
+];
 
 let mapArr = [
     "XXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
@@ -45,8 +82,11 @@ let mapArr = [
     "XXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
 ];
 
-const MAX_ROW = 20,
-    MAX_COL = 29;
+// const MAX_ROW = 20, //31
+//     MAX_COL = 29; // 28
+
+const MAX_ROW = 31, //31
+    MAX_COL = 28; // 28
 
 const maskColor = {
     r: 255,
@@ -115,15 +155,33 @@ const createObjects = async () => {
         enemysArrImg.push(enemySprites);
     }
 
+    mazeImgsArr = [];
+    for (let i = 0; i < 3; i++)
+        for (let j = 0; j < 16; j++) {
+            let newImg = await createImageBitmap(mazeImg, 8 * j + j, 8 * i + i, 8, 8);
+
+            mazeImgsArr.push(newImg);
+        }
+
+    // for(let)
+    mazeImgsObj = {};
+    let count = 0;
+    for (let i = "a".charCodeAt(); i <= "z".charCodeAt(); i++)
+        mazeImgsObj[String.fromCharCode(i)] = mazeImgsArr[count++];
+    for (let i = "A".charCodeAt(); i <= "Z".charCodeAt(); i++)
+        mazeImgsObj[String.fromCharCode(i)] = mazeImgsArr[count++];
+
     pacman = new Pacman(pacmanImgArr, deathPacmanArr, growFactor);
+    //Son 4 enemigos distintos
     for (let i = 0; i < 4; i++) {
         enemys.push(new Enemy(enemysArrImg[i], growFactor));
     }
+    console.log(mazeImgsObj);
 };
 
 window.addEventListener("load", async () => {
     await createObjects();
-    game = new Game([mapArr], canvas.width, canvas.height, growFactor, { rockImg, foodImg }, [pacman, ...enemys]);
+    game = new Game([newMapArr], canvas.width, canvas.height, growFactor, mazeImgsObj, [pacman, ...enemys]);
     inputHandler = new InputHandler(pacman);
     requestAnimationFrame(gameLoop);
 });
