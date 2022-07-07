@@ -26,6 +26,9 @@ export default class Object {
         if (this.dir == 2) return 3;
         if (this.dir == 3) return 2;
     }
+    changeGrowFactor(growFactor) {
+        this.growFactor = growFactor;
+    }
     move() {
         if (this.dir == 0) {
             this.pos.x -= this.speed;
@@ -36,10 +39,15 @@ export default class Object {
         } else if (this.dir == 3) {
             this.pos.y += this.speed;
         }
-        if (this.pos.x < 0) this.pos.x = Map.limits.x - 1;
-        else if (this.pos.x == Map.limits.x) this.pos.x = 0;
-        else if (this.pos.y == 0) this.pos.y = Map.limits.y - 1;
-        else if (this.pos.y == Map.limits.y - 1) this.pos.y = 0;
+        if (this.pos.x <= 0) {
+            this.pos.x = Map.limits.x - 1;
+        } else if (this.pos.x >= Map.limits.x - 1) {
+            this.pos.x = 0;
+        } else if (this.pos.y <= 0) {
+            this.pos.y = Map.limits.y - 1;
+        } else if (this.pos.y >= Map.limits.y - 1) {
+            this.pos.y = 0;
+        }
 
         this.trunc();
     }

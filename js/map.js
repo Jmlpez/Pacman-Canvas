@@ -23,11 +23,11 @@ export default class Map {
                 return false;
             }
         } else if (dir === 2) {
-            if (Map.isObstacle({ y: pos.y - 1, x: pos.x - 1 })) {
+            if (Map.isObstacle({ y: pos.y - 1, x: pos.x })) {
                 return false;
             }
         } else if (dir === 3) {
-            if (Map.isObstacle({ y: pos.y + 1, x: pos.x - 1 })) {
+            if (Map.isObstacle({ y: pos.y + 1, x: pos.x })) {
                 return false;
             }
         }
@@ -35,20 +35,15 @@ export default class Map {
     }
 
     static isObstacle(pos = {}) {
-        // console.log(Map[pos.y][pos.x]);
-        for (let i = 0; i < Map.nonObstacles.length; i++) {
-            if (Map.map[pos.y][pos.x] == Map.nonObstacles[i]) {
-                // console.log(Map.nonObstacles[i]);
-                return false;
-            }
-        }
+        let flag = Map.nonObstacles.find((obs) => obs == Map.map[pos.y][pos.x]);
+        if (flag) return false;
         return true;
     }
 
     constructor(map, width, height, growFactor, images, [pacman, ...enemys]) {
         Map.map = map;
         Map.limits = { x: map[0].length, y: map.length };
-        Map.nonObstacles = ["T", "V", "S", " "];
+        Map.nonObstacles = ["S", "T", "V", " "];
 
         this.width = width;
         this.height = height;
@@ -57,7 +52,9 @@ export default class Map {
         this.pacman = pacman;
         this.enemys = enemys;
     }
-
+    changeGrowFactor(growFactor) {
+        this.growFactor = growFactor;
+    }
     drawMap(ctx) {
         ctx.fillStyle = "#000";
         ctx.fillRect(0, 0, this.width, this.height);
@@ -72,23 +69,6 @@ export default class Map {
                         this.growFactor.y,
                         this.growFactor.x
                     );
-                // if (Map.map[i][j] === "X") {
-                //     ctx.drawImage(
-                //         this.images.rockImg, //this.images[map[i][j]]
-                //         j * this.growFactor.y,
-                //         i * this.growFactor.x,
-                //         this.growFactor.y,
-                //         this.growFactor.x
-                //     );
-                // } else if (Map.map[i][j] === "o") {
-                //     ctx.drawImage(
-                //         this.images.foodImg,
-                //         j * this.growFactor.y,
-                //         i * this.growFactor.x,
-                //         this.growFactor.y,
-                //         this.growFactor.x
-                //     );
-                // }
             }
         }
         this.objectCollisions();
@@ -108,16 +88,16 @@ export default class Map {
             let pos = obj.getPos();
             let collision = !Map.canMove(pos, obj.dir);
 
-            // if (Map.map[pos.y][pos.x] === "o" && obj.type == "pacman") {
-            //     Map.map[pos.y] = this.updateMap(Map.map[pos.y], pos.x, " ");
-            //     //increase the score...
-            //     Game.score++;
+            if ((Map.map[pos.y][pos.x] === "T" || Map.map[pos.y][pos.x] === "V") && obj.type == "pacman") {
+                Map.map[pos.y] = this.updateMap(Map.map[pos.y], pos.x, " ");
+                //increase the score...
+                Game.score++;
 
-            //     let coinAudio = document.querySelector("#coinSound");
-            //     // document.querySelector("audio").p
-            //     coinAudio.currentTime = 0;
-            //     coinAudio.play();
-            // }
+                let coinAudio = document.querySelector("#coinSound");
+                // document.querySelector("audio").p
+                coinAudio.currentTime = 0;
+                coinAudio.play();
+            }
             if (collision) {
                 obj.stop();
             }

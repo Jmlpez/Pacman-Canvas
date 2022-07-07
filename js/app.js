@@ -26,67 +26,67 @@ let pacmanImgArr = [],
     mazeImgsObj = {};
 
 let newMapArr = [
-    "bkkkkkkkkkkkkR kkkkkkkkkkkka",
-    "d T T T T T Tzy T T T T T Tc",
-    "dTxoow xooow zyTxooowTxoow c",
-    "dVzSSyTzSSSyTzy zSSSy zSSy c",
-    "dTBuuA BuuuA BATBuuuATBuuA c",
-    "d T T T T T T T T T T T T Tc",
-    "dTxoow xwTxoooooow xwTxoow c",
-    "d BuuATzy BuuJIuuATzy BuuATc",
-    "dT T T zyT T zyT T zyT T T c",
-    "fmmmmwTzKoowSzySxooLy xmmmme",
-    "SSSSSd zIuuASBASBuuJyTcSSSSS",
-    "SSSSSdTzySSSSSSSSSSzy cSSSSS",
-    "SSSSSd zySDmH  GmCSzyTcSSSSS",
-    "SSSSSS SSScSSSSSSdSSSTSSSSSS",
-    "kkkkkATBAScSSSSSSdSBA Bkkkkk",
-    "mmmmmwTxwScSSSSSSdSxw xmmmmm",
-    "SSSSSd zySFkkkkkkESzyTcSSSSS",
-    "SSSSSdTzySSSSSSSSSSzy cSSSSS",
-    "SSSSSd zySxoooooowSzyTcSSSSS",
-    "bkkkkATBASBuuJIuuASBA Bkkkka",
-    "dT T T T T T zyT T T T T T c",
-    "d xoowTxooowTzy xooow xoowTc",
-    "dTBuJy BuuuA BATBuuuATzIuA c",
-    "dVT zyT T T TSS T T T zyT  c",
-    "howTzy xwTxoooooow xwTzy xog",
-    "juA BATzy BuuJIuuATzy BATBui",
-    "dT T T zyT T zyT T zyT T T c",
-    "d xooooLKoowTzy xooLKoooowTc",
-    "dTBuuuuuuuuA BATBuuuuuuuuA c",
-    "d T T T T T T T T T T T T Tc",
+    "bkkkkkkkkkkkkRQkkkkkkkkkkkka",
+    "dTTTTTTTTTTTTzyTTTTTTTTTTTTc",
+    "dTxoowTxooowTzyTxooowTxoowTc",
+    "dVzSSyTzSSSyTzyTzSSSyTzSSyVc",
+    "dTBuuATBuuuATBATBuuuATBuuATc",
+    "dTTTTTTTTTTTTTTTTTTTTTTTTTTc",
+    "dTxoowTxwTxoooooowTxwTxoowTc",
+    "dTBuuATzyTBuuJIuuATzyTBuuATc",
+    "dTTTTTTzyTTTTzyTTTTzyTTTTTTc",
+    "fmmmmwTzKoowSzySxooLyTxmmmme",
+    "SSSSSdTzIuuASBASBuuJyTcSSSSS",
+    "SSSSSdTzySSSSSSSSSSzyTcSSSSS",
+    "SSSSSdTzySDmH  GmCSzyTcSSSSS",
+    "kkkkkATBAScSSSSSSdSBATBkkkkk",
+    "SSSSSSTSSScSSSSSSdSSSTSSSSSS",
+    "mmmmmwTxwScSSSSSSdSxwTxmmmmm",
+    "SSSSSdTzySFkkkkkkESzyTcSSSSS",
+    "SSSSSdTzySSSSSSSSSSzyTcSSSSS",
+    "SSSSSdTzySxoooooowSzyTcSSSSS",
+    "bkkkkATBASBuuJIuuASBATBkkkka",
+    "dTTTTTTTTTTTTzyTTTTTTTTTTTTc",
+    "dTxoowTxooowTzyTxooowTxoowTc",
+    "dTBuJyTBuuuATBATBuuuATzIuATc",
+    "dVTTzyTTTTTTTSSTTTTTTTzyTTVc",
+    "howTzyTxwTxoooooowTxwTzyTxog",
+    "juATBATzyTBuuJIuuATzyTBATBui",
+    "dTTTTTTzyTTTTzyTTTTzyTTTTTTc",
+    "dTxooooLKoowTzyTxooLKoooowTc",
+    "dTBuuuuuuuuATBATBuuuuuuuuATc",
+    "dTTTTTTTTTTTTTTTTTTTTTTTTTTc",
     "fmmmmmmmmmmmmmmmmmmmmmmmmmme",
 ];
 
-let mapArr = [
-    "XXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-    "X  o |o o o XXXXX o o o| o  X",
-    "X XXX XXXXX XXXXX XXXXX XXX X",
-    "XoXXX XXXXX XXXXX XXXXX XXXoX",
-    "X      o|o   o o   o|o      X",
-    "XoXXXoXX XXXXXXXXXXX XXoXXXoX",
-    "X    |XX    |XXX|    XX     X",
-    "XoXXXoXXXXXX XXX XXXXXXoXXXoX",
-    "X XXXoXX ooo|ooo|ooo XXoXXX X",
-    " o   |XX XXXXXXXXXXX XX|   o ",
-    "X XXXoXX XXXXXXXXXXX XXoXXX X",
-    "XoXXXoXX oo |ooo|ooo XXoXXXoX",
-    "X XXXoXXXXXX XXX XXXXXXoXXX X",
-    "X     XX     XXX     XX     X",
-    "X XXXoXX XXXXXXXXXXX XXoXXX X",
-    "XoXXX| o| o o o o o |o |XXXoX",
-    "X XXXoXXXX XXXXXXXX XXX XXX X",
-    "XoXXXoXXXX          XXX XXXoX",
-    "X  o |o o  XXXXXXXX o o| o  X",
-    "XXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-];
+// let mapArr = [
+//     "XXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+//     "X  o |o o o XXXXX o o o| o  X",
+//     "X XXX XXXXX XXXXX XXXXX XXX X",
+//     "XoXXX XXXXX XXXXX XXXXX XXXoX",
+//     "X      o|o   o o   o|o      X",
+//     "XoXXXoXX XXXXXXXXXXX XXoXXXoX",
+//     "X    |XX    |XXX|    XX     X",
+//     "XoXXXoXXXXXX XXX XXXXXXoXXXoX",
+//     "X XXXoXX ooo|ooo|ooo XXoXXX X",
+//     " o   |XX XXXXXXXXXXX XX|   o ",
+//     "X XXXoXX XXXXXXXXXXX XXoXXX X",
+//     "XoXXXoXX oo |ooo|ooo XXoXXXoX",
+//     "X XXXoXXXXXX XXX XXXXXXoXXX X",
+//     "X     XX     XXX     XX     X",
+//     "X XXXoXX XXXXXXXXXXX XXoXXX X",
+//     "XoXXX| o| o o o o o |o |XXXoX",
+//     "X XXXoXXXX XXXXXXXX XXX XXX X",
+//     "XoXXXoXXXX          XXX XXXoX",
+//     "X  o |o o  XXXXXXXX o o| o  X",
+//     "XXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+// ];
 
 // const MAX_ROW = 20, //31
 //     MAX_COL = 29; // 28
 
-const MAX_ROW = 31, //31
-    MAX_COL = 28; // 28
+const MAX_ROW = newMapArr.length, //31
+    MAX_COL = newMapArr[0].length; // 28
 
 const maskColor = {
     r: 255,
@@ -95,13 +95,25 @@ const maskColor = {
 };
 
 //The objects size is 30 in this case
-canvas.width = MAX_COL * 30;
-canvas.height = MAX_ROW * 30;
+canvas.width = MAX_COL * 20;
+canvas.height = MAX_ROW * 20;
 
-const growFactor = {
+let growFactor = {
     x: parseInt(canvas.width) / MAX_COL,
     y: parseInt(canvas.height) / MAX_ROW,
 };
+
+window.addEventListener("resize", () => {
+    // let bodyStyle = getComputedStyle(document.body);
+    // canvas.width = parseInt(bodyStyle.width);
+    // canvas.height = parseInt(bodyStyle.height);
+    // console.log(canvas.width);
+    // growFactor = {
+    //     x: parseInt(canvas.width) / MAX_COL,
+    //     y: parseInt(canvas.height) / MAX_ROW,
+    // };
+    // game.changeGrowFactor(growFactor);
+});
 
 // Apply mask to the pink color
 const applyMask = (maskColor) => {
@@ -123,13 +135,8 @@ const updateGame = () => {
     applyMask(maskColor);
 };
 
-let start = 0;
 const gameLoop = async (timestamp) => {
-    // let delta = timestamp - start;
-    // start = timestamp;
-
     updateGame();
-
     requestAnimationFrame(gameLoop);
 };
 
@@ -159,24 +166,24 @@ const createObjects = async () => {
     for (let i = 0; i < 3; i++)
         for (let j = 0; j < 16; j++) {
             let newImg = await createImageBitmap(mazeImg, 8 * j + j, 8 * i + i, 8, 8);
-
             mazeImgsArr.push(newImg);
         }
 
-    // for(let)
     mazeImgsObj = {};
     let count = 0;
+    // Maze parts codes
     for (let i = "a".charCodeAt(); i <= "z".charCodeAt(); i++)
         mazeImgsObj[String.fromCharCode(i)] = mazeImgsArr[count++];
     for (let i = "A".charCodeAt(); i <= "Z".charCodeAt(); i++)
         mazeImgsObj[String.fromCharCode(i)] = mazeImgsArr[count++];
+    // Maze parts codes
 
     pacman = new Pacman(pacmanImgArr, deathPacmanArr, growFactor);
+
     //Son 4 enemigos distintos
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < enemysArrImg.length; i++) {
         enemys.push(new Enemy(enemysArrImg[i], growFactor));
     }
-    console.log(mazeImgsObj);
 };
 
 window.addEventListener("load", async () => {

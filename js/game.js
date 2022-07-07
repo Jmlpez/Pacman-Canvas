@@ -13,6 +13,13 @@ export default class Game {
         this.isColliding = false;
         this.initGame();
     }
+    changeGrowFactor(growFactor) {
+        this.growFactor = growFactor;
+        this.map.changeGrowFactor(growFactor);
+        this.objects.forEach((obj) => {
+            obj.changeGrowFactor(growFactor);
+        });
+    }
     initGame() {
         this.map = new Map(
             this.levels[this.currentLevel],
@@ -37,7 +44,6 @@ export default class Game {
                 this.isColliding = false;
                 this.map.pacman.finishDeathAnim = false;
                 this.map.resetMap();
-                console.log("pepe");
             }
         }
     }

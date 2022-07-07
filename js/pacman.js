@@ -15,7 +15,6 @@ export default class Pacman extends Object {
         if (this.lastDir != 5 && this.isValidPos() && Map.canMove(this.pos, this.lastDir)) {
             // console.log(this.pos, this.lastDir);
             this.dir = this.lastDir;
-
             this.lastDir = 5;
             this.speed = 0.1;
         }
