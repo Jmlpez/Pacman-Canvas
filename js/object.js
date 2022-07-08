@@ -28,6 +28,7 @@ export default class Object {
     }
     changeGrowFactor(growFactor) {
         this.growFactor = growFactor;
+        this.size = Math.min(growFactor.x, growFactor.y);
     }
     move() {
         if (this.dir == 0) {

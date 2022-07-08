@@ -6,6 +6,7 @@
 */
 
 import Game from "./game.js";
+import { saveLevel } from "./game.js";
 
 export default class Map {
     static map = [];
@@ -43,7 +44,7 @@ export default class Map {
     constructor(map, width, height, growFactor, images, [pacman, ...enemys]) {
         Map.map = map;
         Map.limits = { x: map[0].length, y: map.length };
-        Map.nonObstacles = ["S", "T", "V", " "];
+        Map.nonObstacles = ["S", "T", "V", " "]; //Coins and spaces..
 
         this.width = width;
         this.height = height;
@@ -51,6 +52,9 @@ export default class Map {
         this.images = images;
         this.pacman = pacman;
         this.enemys = enemys;
+    }
+    changeMap(map) {
+        Map.map = saveLevel(map);
     }
     changeGrowFactor(growFactor) {
         this.growFactor = growFactor;
@@ -88,10 +92,12 @@ export default class Map {
             let pos = obj.getPos();
             let collision = !Map.canMove(pos, obj.dir);
 
+            //if is a coin
             if ((Map.map[pos.y][pos.x] === "T" || Map.map[pos.y][pos.x] === "V") && obj.type == "pacman") {
                 Map.map[pos.y] = this.updateMap(Map.map[pos.y], pos.x, " ");
+
                 //increase the score...
-                Game.score++;
+                Game.scoreValue++;
 
                 let coinAudio = document.querySelector("#coinSound");
                 // document.querySelector("audio").p
@@ -109,7 +115,6 @@ export default class Map {
                 this.pacman.animCount = 0;
                 return true;
             }
-
         return false;
     }
     stop() {

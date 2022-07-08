@@ -23,7 +23,8 @@ let map,
 let pacmanImgArr = [],
     deathPacmanArr = [],
     mazeImgsArr = [],
-    mazeImgsObj = {};
+    mazeImgsObj = {},
+    growFactor = {};
 
 let newMapArr = [
     "bkkkkkkkkkkkkRQkkkkkkkkkkkka",
@@ -59,32 +60,6 @@ let newMapArr = [
     "fmmmmmmmmmmmmmmmmmmmmmmmmmme",
 ];
 
-// let mapArr = [
-//     "XXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-//     "X  o |o o o XXXXX o o o| o  X",
-//     "X XXX XXXXX XXXXX XXXXX XXX X",
-//     "XoXXX XXXXX XXXXX XXXXX XXXoX",
-//     "X      o|o   o o   o|o      X",
-//     "XoXXXoXX XXXXXXXXXXX XXoXXXoX",
-//     "X    |XX    |XXX|    XX     X",
-//     "XoXXXoXXXXXX XXX XXXXXXoXXXoX",
-//     "X XXXoXX ooo|ooo|ooo XXoXXX X",
-//     " o   |XX XXXXXXXXXXX XX|   o ",
-//     "X XXXoXX XXXXXXXXXXX XXoXXX X",
-//     "XoXXXoXX oo |ooo|ooo XXoXXXoX",
-//     "X XXXoXXXXXX XXX XXXXXXoXXX X",
-//     "X     XX     XXX     XX     X",
-//     "X XXXoXX XXXXXXXXXXX XXoXXX X",
-//     "XoXXX| o| o o o o o |o |XXXoX",
-//     "X XXXoXXXX XXXXXXXX XXX XXX X",
-//     "XoXXXoXXXX          XXX XXXoX",
-//     "X  o |o o  XXXXXXXX o o| o  X",
-//     "XXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-// ];
-
-// const MAX_ROW = 20, //31
-//     MAX_COL = 29; // 28
-
 const MAX_ROW = newMapArr.length, //31
     MAX_COL = newMapArr[0].length; // 28
 
@@ -94,25 +69,26 @@ const maskColor = {
     b: 255,
 };
 
-//The objects size is 30 in this case
-canvas.width = MAX_COL * 20;
-canvas.height = MAX_ROW * 20;
+const setGameSize = () => {
+    //The objects size is 20 in this case
+    let bodyStyle = getComputedStyle(document.body);
 
-let growFactor = {
-    x: parseInt(canvas.width) / MAX_COL,
-    y: parseInt(canvas.height) / MAX_ROW,
+    let factor = Math.min((parseInt(bodyStyle.width) - 10) / 28, (parseInt(bodyStyle.height) - 10) / 31);
+    // factor = Math.floor(factor);
+    canvas.width = MAX_COL * factor;
+    canvas.height = MAX_ROW * factor;
+    // console.log(canvas.width, canvas.height, factor);
+    growFactor = {
+        x: parseInt(canvas.width) / MAX_COL,
+        y: parseInt(canvas.height) / MAX_ROW,
+    };
 };
 
+setGameSize();
+
 window.addEventListener("resize", () => {
-    // let bodyStyle = getComputedStyle(document.body);
-    // canvas.width = parseInt(bodyStyle.width);
-    // canvas.height = parseInt(bodyStyle.height);
-    // console.log(canvas.width);
-    // growFactor = {
-    //     x: parseInt(canvas.width) / MAX_COL,
-    //     y: parseInt(canvas.height) / MAX_ROW,
-    // };
-    // game.changeGrowFactor(growFactor);
+    setGameSize();
+    game.changeGrowFactor(growFactor);
 });
 
 // Apply mask to the pink color
@@ -189,6 +165,6 @@ const createObjects = async () => {
 window.addEventListener("load", async () => {
     await createObjects();
     game = new Game([newMapArr], canvas.width, canvas.height, growFactor, mazeImgsObj, [pacman, ...enemys]);
-    inputHandler = new InputHandler(pacman);
+    inputHandler = new InputHandler(pacman, game);
     requestAnimationFrame(gameLoop);
 });
