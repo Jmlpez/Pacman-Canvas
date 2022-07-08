@@ -4,6 +4,7 @@ import Score from "./score.js";
 export const GAME_STATES = {
     RUNNING: 0,
     GAMEOVER: 1,
+    WIN: 2,
 };
 
 export const saveLevel = (map = []) => {
@@ -20,7 +21,6 @@ export default class Game {
     static gameState = GAME_STATES.RUNNING;
     static updateLives = () => {
         Game.lives--;
-        console.log(this.gameState);
         if (Game.lives == 0) {
             Game.gameState = GAME_STATES.GAMEOVER;
         }
@@ -101,8 +101,15 @@ export default class Game {
             ctx.fillStyle = "#000";
             ctx.fillRect(0, 0, this.width, this.height);
             let deathText = [`game over`, `score ${Game.scoreValue}`, "Press spacebar to play again"];
-            for (let i = 0; i < 3; i++) {
+            for (let i = 0; i < deathText.length; i++) {
                 this.score.drawText(ctx, deathText[i].toLowerCase(), { x: 0, y: i * 2 + 12 }, this.growFactor);
+            }
+        } else if (Game.gameState == GAME_STATES.WIN) {
+            ctx.fillStyle = "#000";
+            ctx.fillRect(0, 0, this.width, this.height);
+            let winText = ["You Win", "You got all the points", "Press spacebar to play again"];
+            for (let i = 0; i < winText.length; i++) {
+                this.score.drawText(ctx, winText[i].toLowerCase(), { x: 0, y: i * 2 + 12 }, this.growFactor);
             }
         }
     }
@@ -112,5 +119,6 @@ export default class Game {
         Game.gameState = GAME_STATES.RUNNING;
         Game.lives = 3;
         Game.scoreValue = 0;
+        this.map.maxScore = this.map.getMaxScore();
     }
 }

@@ -5,7 +5,7 @@
 3- bottom
 */
 
-import Game from "./game.js";
+import Game, { GAME_STATES } from "./game.js";
 import { saveLevel } from "./game.js";
 
 export default class Map {
@@ -40,7 +40,6 @@ export default class Map {
         if (flag) return false;
         return true;
     }
-
     constructor(map, width, height, growFactor, images, [pacman, ...enemys]) {
         Map.map = map;
         Map.limits = { x: map[0].length, y: map.length };
@@ -52,6 +51,17 @@ export default class Map {
         this.images = images;
         this.pacman = pacman;
         this.enemys = enemys;
+        this.maxScore = this.getMaxScore();
+    }
+    getMaxScore() {
+        let score = 0;
+        for (let i = 0; i < Map.map.length; i++) {
+            for (let j = 0; j < Map.map[i].length; j++) {
+                const char = Map.map[i][j];
+                score += char == "T" || char == "V";
+            }
+        }
+        return score;
     }
     changeMap(map) {
         Map.map = saveLevel(map);
@@ -98,9 +108,11 @@ export default class Map {
 
                 //increase the score...
                 Game.scoreValue++;
+                if (Game.scoreValue == this.maxScore) {
+                    Game.gameState = GAME_STATES.WIN;
+                }
 
                 let coinAudio = document.querySelector("#coinSound");
-                // document.querySelector("audio").p
                 coinAudio.currentTime = 0;
                 coinAudio.play();
             }

@@ -24,7 +24,7 @@ export default class InputHandler {
                     this.pacman.setDir(3);
                     break;
                 case " ":
-                    if (Game.gameState == GAME_STATES.GAMEOVER) {
+                    if (Game.gameState == GAME_STATES.GAMEOVER || Game.gameState == GAME_STATES.WIN) {
                         this.game.reset();
                     }
                     break;
@@ -34,6 +34,9 @@ export default class InputHandler {
         });
         document.addEventListener("touchstart", (event) => {
             this.posInicial = event.touches[0];
+            if (Game.gameState == GAME_STATES.GAMEOVER || Game.gameState == GAME_STATES.WIN) {
+                this.game.reset();
+            }
         });
         document.addEventListener("touchmove", (event) => {
             const dir = this.handleTouchMove(this.posInicial, event.touches[0]);
