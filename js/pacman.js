@@ -39,10 +39,10 @@ export default class Pacman extends Object {
         this.speed = 0.1;
     }
     death(ctx) {
-        let count = Math.floor(this.animCount / 10) % 6;
+        let count = Math.floor(this.animCount / 20) % 6;
         let img = this.deathSprites[count];
         ctx.drawImage(img, this.pos.x * this.growFactor.x, this.pos.y * this.growFactor.y, this.size, this.size);
         this.animCount++;
-        if (this.animCount >= 60) this.finishDeathAnim = true;
+        if (this.animCount >= 120) this.finishDeathAnim = true;
     }
 }
